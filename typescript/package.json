@@ -1,0 +1,17 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start:dayc": "cd design-as-you-code && tsx index.ts",
+    "build:dayc": "cd design-as-you-code && tsup .",
+    "test:dayc": "vitest run --dir design-as-you-code"
+  },
+  "devDependencies": {
+    "tsup": "^6.6.3",
+    "tsx": "^3.12.3",
+    "typescript": "^4.9.5",
+    "vitest": "^0.29.2"
+  }
+}
