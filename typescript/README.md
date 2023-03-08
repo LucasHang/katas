@@ -1,3 +1,5 @@
+# Typescript
+
 Typescript is a language that I know better, so I use it for develop a variety of solutions for the proposed kata and then use those to make analogies with new languages.
 
 Some implementations I want to try:
