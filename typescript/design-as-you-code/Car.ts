@@ -50,4 +50,12 @@ export default class Car {
 
         selectedDoor.open();
     }
+
+    turnOn(key: CarKey) {
+        if(!key.authorizedFor(this)){
+            return;
+        }
+
+        this._turnedOn = true;
+    }
 }

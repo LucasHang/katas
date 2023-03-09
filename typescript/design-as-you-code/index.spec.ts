@@ -39,4 +39,15 @@ describe('Car entity', () => {
 
         expect(car.doors[0].isOpen).toBe(true);
     });
+
+    it('can be turned on using a key', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+
+        car.turnOn(key);
+
+        expect(car.turnedOn).toBe(true);
+    });
 });
