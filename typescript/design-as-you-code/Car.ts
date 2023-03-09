@@ -1,14 +1,16 @@
 import CarDoor from "./CarDoor";
 import CarKey from "./CarKey";
+import CarWindshieldWiper from "./CarWindshieldWiper";
 
 interface CarFeatures {
 }
 
 export default class Car {
-    private _locked: boolean = true;
-    private _turnedOn: boolean = false;
-    private _moving: boolean = false;
-    private _doors: CarDoor[] = [new CarDoor(), new CarDoor(), new CarDoor(), new CarDoor()];
+    private _locked = true;
+    private _turnedOn = false;
+    private _moving = false;
+    private _doors = [new CarDoor(), new CarDoor(), new CarDoor(), new CarDoor()];
+    private _windshieldWiper = new CarWindshieldWiper(this);
 
     constructor() {
     }
@@ -27,6 +29,10 @@ export default class Car {
 
     get doors(): CarDoor[] {
         return [...this._doors];
+    }
+
+    get windshieldWiper(): CarWindshieldWiper {
+        return this._windshieldWiper;
     }
 
     unlock(key: CarKey) {
@@ -57,5 +63,13 @@ export default class Car {
         }
 
         this._turnedOn = true;
+    }
+
+    turnOff(key: CarKey) {
+        if(!key.authorizedFor(this)){
+            return;
+        }
+
+        this._turnedOn = false;
     }
 }

@@ -40,7 +40,7 @@ describe('Car entity', () => {
         expect(car.doors[0].isOpen).toBe(true);
     });
 
-    it('can be turned on using a key', () => {
+    it('can be turned on/off using a key', () => {
         const car = new Car();
         const key = new CarKey(car);
 
@@ -49,5 +49,87 @@ describe('Car entity', () => {
         car.turnOn(key);
 
         expect(car.turnedOn).toBe(true);
+        
+        car.turnOff(key);
+
+        expect(car.turnedOn).toBe(false);
+    });
+
+    it('can have the windshield wiper activated if turned on', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+
+        car.turnOn(key);
+
+        car.windshieldWiper.activate();
+
+        expect(car.turnedOn).toBe(true);
+        expect(car.windshieldWiper.isActive).toBe(true);
+
+        car.windshieldWiper.deactivate();
+
+        car.turnOff(key);
+
+        car.windshieldWiper.activate();
+
+        expect(car.turnedOn).toBe(false);
+        expect(car.windshieldWiper.isActive).toBe(false);
+    });
+
+    it('windshield wiper can choose different velocities', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+
+        car.turnOn(key);
+
+        car.windshieldWiper.activate();
+
+        expect(car.windshieldWiper.velocity).toBe(1);
+
+        car.windshieldWiper.increaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(2);
+        
+        car.windshieldWiper.increaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(3);
+        
+        car.windshieldWiper.increaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(4);
+
+        // -- To ensure it dont go over the max level
+
+        car.windshieldWiper.increaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(4);
+
+        // -- Now in 'rain' context
+
+        car.windshieldWiper.speedContext = 'rain';
+        
+        expect(car.windshieldWiper.velocity).toBe(8);
+
+        car.windshieldWiper.decreaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(7);
+        
+        car.windshieldWiper.decreaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(6);
+        
+        car.windshieldWiper.decreaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(5);
+
+        // -- To ensure it dont go under the minimum level
+
+        car.windshieldWiper.decreaseLevel();
+
+        expect(car.windshieldWiper.velocity).toBe(5);
     });
 });
