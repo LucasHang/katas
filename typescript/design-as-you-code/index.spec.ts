@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vitest } from 'vitest';
 import Car from './Car';
 import CarKey from './CarKey';
 
@@ -102,13 +102,13 @@ describe('Car entity', () => {
 
         expect(car.windshieldWiper.velocity).toBe(4);
 
-        // -- To ensure it dont go over the max level
+        // To ensure it dont go over the max level
 
         car.windshieldWiper.increaseLevel();
 
         expect(car.windshieldWiper.velocity).toBe(4);
 
-        // -- Now in 'rain' context
+        // Now in 'rain' context
 
         car.windshieldWiper.speedContext = 'rain';
         
@@ -126,10 +126,29 @@ describe('Car entity', () => {
 
         expect(car.windshieldWiper.velocity).toBe(5);
 
-        // -- To ensure it dont go under the minimum level
+        // To ensure it dont go under the minimum level
 
         car.windshieldWiper.decreaseLevel();
 
         expect(car.windshieldWiper.velocity).toBe(5);
+    });
+
+    it('windshield wiper must wipe 3 times if water system is activated', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        const spyActivateTemporarily = vitest.spyOn(car.windshieldWiper, 'activateTemporarily');
+        spyActivateTemporarily.mockImplementationOnce(() => {});
+
+        // With normal speed context and level 1 of speed we should have 1 swipe per second
+        car.windshieldWiper.speedContext = 'normal';
+
+        car.waterSystem.washFrontal();
+
+        expect(spyActivateTemporarily).toHaveBeenCalledTimes(1);
+        expect(spyActivateTemporarily).toHaveBeenCalledWith(3);
     });
 });

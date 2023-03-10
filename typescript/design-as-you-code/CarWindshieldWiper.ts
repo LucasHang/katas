@@ -14,8 +14,12 @@ export default class CarWindshieldWiper {
         return this._isActive;
     }
     
-    /** Expressed in sm (swipe by minute) */
+    /** Expressed in ss (swipe by second) */
     get velocity(): number {
+        if(!this._isActive){
+            return 0;
+        }
+
         const contextBaseVelocity = this._speedContext === 'normal' ? 0 : 4;
 
         return this._speedLevel + contextBaseVelocity;
@@ -35,6 +39,18 @@ export default class CarWindshieldWiper {
 
     deactivate() {
         this._isActive = false;
+    }
+
+    activateTemporarily(numberOfSwipes: number) {
+        if(!this.car.turnedOn) {
+            return;
+        }
+
+        const timeoutInSeconds = numberOfSwipes / this.velocity;
+
+        this._isActive = true;
+
+        setTimeout(this.deactivate, timeoutInSeconds * 1000);
     }
 
     increaseLevel() {

@@ -1,5 +1,6 @@
 import CarDoor from "./CarDoor";
 import CarKey from "./CarKey";
+import CarWaterSystem from "./CarWaterSystem";
 import CarWindshieldWiper from "./CarWindshieldWiper";
 
 interface CarFeatures {
@@ -11,6 +12,7 @@ export default class Car {
     private _moving = false;
     private _doors = [new CarDoor(), new CarDoor(), new CarDoor(), new CarDoor()];
     private _windshieldWiper = new CarWindshieldWiper(this);
+    private _waterSystem = new CarWaterSystem(this);
 
     constructor() {
     }
@@ -33,6 +35,10 @@ export default class Car {
 
     get windshieldWiper(): CarWindshieldWiper {
         return this._windshieldWiper;
+    }
+
+    get waterSystem(): CarWaterSystem {
+        return this._waterSystem;
     }
 
     unlock(key: CarKey) {
