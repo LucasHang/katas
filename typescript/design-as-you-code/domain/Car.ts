@@ -1,4 +1,5 @@
 import Logger from "../shared/Logger";
+import CarAirConditioner from "./CarAirConditioner";
 import CarDoor from "./CarDoor";
 import CarKey from "./CarKey";
 import CarWaterSystem from "./CarWaterSystem";
@@ -11,6 +12,7 @@ export default class Car {
     private _doors = [new CarDoor(), new CarDoor(), new CarDoor(), new CarDoor()];
     private _windshieldWiper = new CarWindshieldWiper(this);
     private _waterSystem = new CarWaterSystem(this);
+    private _airConditioner = new CarAirConditioner(this);
 
     constructor() {
         Logger.log('Car created');
@@ -38,6 +40,10 @@ export default class Car {
 
     get waterSystem(): CarWaterSystem {
         return this._waterSystem;
+    }
+    
+    get airConditioner(): CarAirConditioner {
+        return this._airConditioner;
     }
 
     unlock(key: CarKey) {

@@ -151,4 +151,205 @@ describe('Car entity', () => {
         expect(spyActivateTemporarily).toHaveBeenCalledTimes(1);
         expect(spyActivateTemporarily).toHaveBeenCalledWith(3);
     });
+
+    it('can have the air conditioner activated if turned on', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.turnedOn).toBe(true);
+        expect(car.airConditioner.isActive).toBe(true);
+
+        car.airConditioner.decreaseFanSpeed();
+
+        car.turnOff(key);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.turnedOn).toBe(false);
+        expect(car.airConditioner.isActive).toBe(false);
+    });
+
+    it('air conditioner fan can have different velocities', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        // Test increasing
+
+        expect(car.airConditioner.fanSpeed).toBe(0);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(1);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(2);
+        
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(3);
+
+        // To ensure it dont go over the max speed
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(3);
+
+        // Test decreasing
+
+        car.airConditioner.decreaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(2);
+
+        car.airConditioner.decreaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(1);
+        
+        car.airConditioner.decreaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(0);
+
+        // To ensure it dont go under the max speed
+
+        car.airConditioner.decreaseFanSpeed();
+
+        expect(car.airConditioner.fanSpeed).toBe(0);
+    });
+
+    it('air conditioner temperature can be changed within a limit', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        expect(car.airConditioner.temperature).toBe(16);
+
+        car.airConditioner.temperature = 20
+
+        expect(car.airConditioner.temperature).toBe(20);
+        
+        car.airConditioner.temperature = 14;
+
+        expect(car.airConditioner.temperature).toBe(16);
+        
+        car.airConditioner.temperature = 36;
+
+        expect(car.airConditioner.temperature).toBe(35);
+    });
+
+    it('air conditioner air-direction can be chosen within a specified set', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        expect(car.airConditioner.airDirection).toBe('front');
+
+        car.airConditioner.airDirection = 'down';
+
+        expect(car.airConditioner.airDirection).toBe('down');
+        
+        car.airConditioner.airDirection = 'front-down';
+
+        expect(car.airConditioner.airDirection).toBe('front-down');
+        
+        car.airConditioner.airDirection = 'up-front';
+
+        expect(car.airConditioner.airDirection).toBe('up-front');
+    });
+
+    it('air conditioner outside air entrance can be toggled on/off', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+
+        car.airConditioner.toggleOutsideAirEntrance();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(true);
+        
+        car.airConditioner.toggleOutsideAirEntrance();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+
+        // To ensure it does no toggle after deactivated
+
+        car.airConditioner.decreaseFanSpeed();
+
+        car.airConditioner.toggleOutsideAirEntrance();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+    });
+    
+    it('air conditioner cool can be toggled on/off', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.cool).toBe(false);
+
+        car.airConditioner.toggleCool();
+
+        expect(car.airConditioner.cool).toBe(true);
+        
+        car.airConditioner.toggleCool();
+
+        expect(car.airConditioner.cool).toBe(false);
+
+        // To ensure it does no toggle after deactivated
+
+        car.airConditioner.decreaseFanSpeed();
+
+        car.airConditioner.toggleCool();
+
+        expect(car.airConditioner.cool).toBe(false);
+    });
+
+    it('air conditioner outside air entrance can not be on if air direction is "up-front"', () => {
+        const car = new Car();
+        const key = new CarKey(car);
+
+        key.pressUnlock();
+        car.turnOn(key);
+
+        car.airConditioner.increaseFanSpeed();
+
+        expect(car.airConditioner.airDirection).toBe('front');
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+
+        car.airConditioner.airDirection = 'up-front';
+
+        car.airConditioner.toggleOutsideAirEntrance();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+
+        car.airConditioner.airDirection = 'down';
+
+        car.airConditioner.toggleOutsideAirEntrance();
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(true);
+
+        car.airConditioner.airDirection = 'up-front';
+
+        expect(car.airConditioner.outsideAirEntranceOpen).toBe(false);
+    });
 });
