@@ -1,6 +1,6 @@
 import { describe, expect, it, vitest } from 'vitest';
-import Car from './Car';
-import CarKey from './CarKey';
+import Car from './domain/Car';
+import CarKey from './domain/CarKey';
 
 describe('Car entity', () => {
     it('constructs in the right state', () => {
@@ -141,7 +141,7 @@ describe('Car entity', () => {
         car.turnOn(key);
 
         const spyActivateTemporarily = vitest.spyOn(car.windshieldWiper, 'activateTemporarily');
-        spyActivateTemporarily.mockImplementationOnce(() => {});
+        spyActivateTemporarily.mockImplementationOnce(() => Promise.resolve());
 
         // With normal speed context and level 1 of speed we should have 1 swipe per second
         car.windshieldWiper.speedContext = 'normal';

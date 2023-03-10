@@ -1,10 +1,8 @@
+import Logger from "../shared/Logger";
 import CarDoor from "./CarDoor";
 import CarKey from "./CarKey";
 import CarWaterSystem from "./CarWaterSystem";
 import CarWindshieldWiper from "./CarWindshieldWiper";
-
-interface CarFeatures {
-}
 
 export default class Car {
     private _locked = true;
@@ -15,6 +13,7 @@ export default class Car {
     private _waterSystem = new CarWaterSystem(this);
 
     constructor() {
+        Logger.log('Car created');
     }
 
     get locked(): boolean {
@@ -47,6 +46,8 @@ export default class Car {
         }
 
         this._locked = false;
+
+        Logger.log('Car unlocked');
     }
 
     openDoor(doorIndex: number) {
@@ -61,6 +62,8 @@ export default class Car {
         }
 
         selectedDoor.open();
+
+        Logger.log(`Door ${doorIndex} opened`);
     }
 
     turnOn(key: CarKey) {
@@ -69,6 +72,8 @@ export default class Car {
         }
 
         this._turnedOn = true;
+
+        Logger.log('Car turned on');
     }
 
     turnOff(key: CarKey) {
@@ -77,5 +82,7 @@ export default class Car {
         }
 
         this._turnedOn = false;
+
+        Logger.log('Car turned off');
     }
 }

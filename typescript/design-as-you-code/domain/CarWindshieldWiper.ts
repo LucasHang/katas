@@ -1,3 +1,4 @@
+import Logger from "../shared/Logger";
 import Car from "./Car";
 
 const MIN_SPEED_LEVEL = 1;
@@ -35,22 +36,28 @@ export default class CarWindshieldWiper {
         }
 
         this._isActive = true;
+
+        Logger.log('Windshield wiper activated');
     }
 
     deactivate() {
         this._isActive = false;
+
+        Logger.log('Windshield wiper deactivated');
     }
 
-    activateTemporarily(numberOfSwipes: number) {
-        if(!this.car.turnedOn) {
-            return;
-        }
+    async activateTemporarily(numberOfSwipes: number) {
+        this.activate();
 
         const timeoutInSeconds = numberOfSwipes / this.velocity;
 
-        this._isActive = true;
+        return new Promise(resolve => {
+            setTimeout(() => {
+                this.deactivate();
 
-        setTimeout(this.deactivate, timeoutInSeconds * 1000);
+                resolve(null);
+            }, timeoutInSeconds * 1000);
+        });
     }
 
     increaseLevel() {
@@ -65,6 +72,8 @@ export default class CarWindshieldWiper {
         }
 
         this._speedLevel = nextLevel;
+
+        Logger.log('Windshield wiper speed level increased');
     }
 
     decreaseLevel() {
@@ -79,5 +88,7 @@ export default class CarWindshieldWiper {
         }
 
         this._speedLevel = nextLevel;
+
+        Logger.log('Windshield wiper speed level decreased');
     }
 }
