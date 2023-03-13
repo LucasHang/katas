@@ -1,6 +1,7 @@
 name: "Build - Typecript DAYC"
 
 on:
+  workflow_dispatch
   push:
     branches:
       - main
