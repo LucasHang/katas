@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "test": "vitest run",
     "start:dayc": "cd design-as-you-code && tsx index.ts",
     "build:dayc": "cd design-as-you-code && tsup .",
     "test:dayc": "vitest run --dir design-as-you-code"
