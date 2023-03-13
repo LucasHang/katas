@@ -19,10 +19,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          # cache: yarn
+          cache: yarn
+          cache-dependency-path: typescript/yarn.lock
 
       - name: Install deps
-        run: yarn install
+        run: yarn --cwd ./typescript install
 
       - name: Run tests
-        run: npm run test
+        run: yarn --cwd ./typescript test
