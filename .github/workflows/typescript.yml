@@ -19,10 +19,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
+          cache: yarn
 
       - name: Install deps
-        run: npm install
+        run: yarn install
 
       - name: Run tests
         run: npm run test
