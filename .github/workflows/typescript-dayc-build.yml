@@ -9,7 +9,7 @@ on:
       - "typescript/**"
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: yarn
+          # cache: yarn
 
       - name: Install deps
         run: yarn install
