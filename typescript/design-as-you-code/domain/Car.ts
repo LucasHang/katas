@@ -69,7 +69,23 @@ export default class Car {
 
         selectedDoor.open();
 
-        Logger.log(`Door ${doorIndex} opened`);
+        Logger.log(`Door ${doorIndex} open`);
+    }
+
+    closeDoor(doorIndex: number) {
+        if(this._locked) {
+            return;
+        }
+
+        const selectedDoor = this._doors[doorIndex];
+
+        if(!selectedDoor){
+            return;
+        }
+
+        selectedDoor.close();
+
+        Logger.log(`Door ${doorIndex} closed`);
     }
 
     turnOn(key: CarKey) {

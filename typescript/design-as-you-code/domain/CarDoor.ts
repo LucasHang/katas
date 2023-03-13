@@ -10,4 +10,8 @@ export default class CarDoor {
     open() {
         this._isOpen = true;
     }
+
+    close() {
+        this._isOpen = false;
+    }
 }

@@ -1,3 +1,4 @@
+import Logger from "../shared/Logger";
 import Car from "./Car";
 
 const MIN_FAN_SPEED = 0;
@@ -45,6 +46,8 @@ export default class CarAirConditioner {
         }
 
         this._temperature = value;
+
+        Logger.log(`Temperature set to ${value} degrees`);
     }
 
     get airDirection(): AirDirections {
@@ -57,6 +60,8 @@ export default class CarAirConditioner {
         if(value === 'up-front'){
             this._outsideAirEntranceOpen = false;
         }
+
+        Logger.log(`Air direction set to ${value}`);
     }
 
     get outsideAirEntranceOpen(): boolean {
@@ -75,6 +80,8 @@ export default class CarAirConditioner {
         }
 
         this._fanSpeed = newFanSpeed;
+
+        Logger.log(`Fan speed increased to ${newFanSpeed}`);
     }
 
     decreaseFanSpeed() {
@@ -85,6 +92,8 @@ export default class CarAirConditioner {
         }
 
         this._fanSpeed = newFanSpeed;
+
+        Logger.log(`Fan speed decreased to ${newFanSpeed}`);
     }
 
     toggleOutsideAirEntrance() {
@@ -98,6 +107,8 @@ export default class CarAirConditioner {
         }
 
         this._outsideAirEntranceOpen = !this._outsideAirEntranceOpen;
+
+        Logger.log(`Outside air entrance toggled`);
     }
 
     toggleCool() {
@@ -106,5 +117,7 @@ export default class CarAirConditioner {
         }
         
         this._cool = !this._cool;
+
+        Logger.log(`Cool toggled`);
     }
 }

@@ -29,7 +29,7 @@ describe('Car entity', () => {
         expect(car.locked).toBe(false);
     });
 
-    it('can have a door open if unlocked', () => {
+    it('can have a door open/closed if unlocked', () => {
         const car = new Car();
         const key = new CarKey(car);
 
@@ -38,6 +38,10 @@ describe('Car entity', () => {
         car.openDoor(0);
 
         expect(car.doors[0].isOpen).toBe(true);
+        
+        car.closeDoor(0);
+
+        expect(car.doors[0].isOpen).toBe(false);
     });
 
     it('can be turned on/off using a key', () => {
