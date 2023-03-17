@@ -3,7 +3,7 @@ class CarKey:
         self._car = car
 
     def authorizedFor(self, car):
-        return self._car == car
+        return self._car is car
 
     def insertAndUnlock(self):
         self._car.unlock(self)
