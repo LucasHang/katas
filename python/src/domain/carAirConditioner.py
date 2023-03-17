@@ -1,3 +1,5 @@
+from src.shared.logger import log
+
 MIN_FAN_SPEED = 0
 MAX_FAN_SPEED = 3
 
@@ -43,6 +45,8 @@ class CarAirConditioner:
 
         self._temperature = value
 
+        log(f'Temperature set to {value} degrees')
+
     @property
     def airDirection(self):
         return self._airDirection
@@ -58,6 +62,8 @@ class CarAirConditioner:
 
         if value == 'up-front':
             self._outsideAirEntranceOpen = False
+
+        log(f'Air direction set to {value}')
 
     @property
     def outsideAirEntranceOpen(self):
@@ -75,6 +81,8 @@ class CarAirConditioner:
         
         self._fanSpeed = newFanSpeed
 
+        log(f'Fan speed increased to {newFanSpeed}')
+
     def decreaseFanSpeed(self):
         newFanSpeed = self._fanSpeed - 1
 
@@ -82,6 +90,8 @@ class CarAirConditioner:
             return
         
         self._fanSpeed = newFanSpeed
+
+        log(f'Fan speed decreased to {newFanSpeed}')
 
     def toggleOutsideAirEntrance(self):
         if not self.isActive:
@@ -92,9 +102,13 @@ class CarAirConditioner:
             return
 
         self._outsideAirEntranceOpen = not self._outsideAirEntranceOpen
+        
+        log('Outside air entrance toggled')
 
     def toggleCool(self):
         if not self.isActive:
             return
         
         self._cool = not self._cool
+
+        log('Cool toggled')

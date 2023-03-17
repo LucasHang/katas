@@ -1,3 +1,5 @@
+from src.shared.logger import log
+
 from .carDoor import CarDoor
 from .carWindshieldWiper import CarWindshieldWiper
 from .carWaterSystem import CarWaterSystem
@@ -12,6 +14,8 @@ class Car:
         self._windshieldWiper = CarWindshieldWiper(self)
         self._waterSystem = CarWaterSystem(self)
         self._airConditioner = CarAirConditioner(self)
+
+        log('Car created')
 
     @property
     def locked(self):
@@ -46,6 +50,8 @@ class Car:
             return
 
         self._locked = False
+
+        log('Car unlocked')
     
     def openDoor(self, doorNumber):
         if self._locked:
@@ -53,11 +59,15 @@ class Car:
 
         self._doors[doorNumber].open()
 
+        log(f'Door {doorNumber} open')
+
     def closeDoor(self, doorNumber):
         if self._locked:
             return
 
         self._doors[doorNumber].close()
+
+        log(f'Door {doorNumber} closed')
 
     def turnOn(self, carKey):
         if not carKey.authorizedFor(self):
@@ -65,8 +75,12 @@ class Car:
         
         self._turnedOn = True
 
+        log('Car turned on')
+
     def turnOff(self, carKey):
         if not carKey.authorizedFor(self):
             return
         
         self._turnedOn = False
+
+        log('Car turned off')

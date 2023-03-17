@@ -1,2 +1,7 @@
+import os
+
+logs = list()
+
 def log(message):
-    print(message)
+    # Don't know how to validate a `NODE_ENV` equivalent in python
+    logs.append(message)

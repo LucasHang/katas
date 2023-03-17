@@ -1,5 +1,7 @@
 import asyncio
 
+from src.shared.logger import log
+
 MIN_SPEED_LEVEL = 1
 MAX_SPEED_LEVEL = 4
 
@@ -41,6 +43,8 @@ class CarWindshieldWiper:
             return
 
         self._isActive = True
+
+        log('Windshield wiper activated')
     
     async def activateTemporarily(self, numberOfSwipes):
         self.activate()
@@ -54,6 +58,8 @@ class CarWindshieldWiper:
     def deactivate(self):
         self._isActive = False
 
+        log('Windshield wiper deactivated')
+
     def increaseLevel(self):
         if not self._isActive:
             return
@@ -64,6 +70,8 @@ class CarWindshieldWiper:
             return
         
         self._speedLevel = newSpeedLevel
+
+        log('Windshield wiper speed level increased')
     
     def decreaseLevel(self):
         if not self._isActive:
@@ -75,3 +83,5 @@ class CarWindshieldWiper:
             return
         
         self._speedLevel = newSpeedLevel
+
+        log('Windshield wiper speed level decreased')
