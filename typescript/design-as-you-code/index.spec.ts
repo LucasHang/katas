@@ -137,7 +137,7 @@ describe('Car entity', () => {
         expect(car.windshieldWiper.velocity).toBe(5);
     });
 
-    it('windshield wiper must wipe 3 times if water system is activated', () => {
+    it('windshield wiper must wipe 3 times if water system is activated', async () => {
         const car = new Car();
         const key = new CarKey(car);
 
@@ -150,7 +150,7 @@ describe('Car entity', () => {
         // With normal speed context and level 1 of speed we should have 1 swipe per second
         car.windshieldWiper.speedContext = 'normal';
 
-        car.waterSystem.washFrontal();
+        await car.waterSystem.washFrontal();
 
         expect(spyActivateTemporarily).toHaveBeenCalledTimes(1);
         expect(spyActivateTemporarily).toHaveBeenCalledWith(3);

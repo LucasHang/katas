@@ -7,7 +7,7 @@ const MAX_SPEED_LEVEL = 4;
 export default class CarWindshieldWiper {
     private _isActive = false;
     private _speedContext: 'normal' | 'rain' = 'normal';
-    private _speedLevel = 1;
+    private _speedLevel = MIN_SPEED_LEVEL;
     
     constructor(private car: Car) {}
 
