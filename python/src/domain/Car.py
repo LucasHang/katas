@@ -1,6 +1,7 @@
 from .carDoor import CarDoor
 from .carWindshieldWiper import CarWindshieldWiper
 from .carWaterSystem import CarWaterSystem
+from .carAirConditioner import CarAirConditioner
 
 class Car:
     def __init__(self):
@@ -10,6 +11,7 @@ class Car:
         self._doors = (CarDoor(), CarDoor(), CarDoor(), CarDoor())
         self._windshieldWiper = CarWindshieldWiper(self)
         self._waterSystem = CarWaterSystem(self)
+        self._airConditioner = CarAirConditioner(self)
 
     @property
     def locked(self):
@@ -34,6 +36,10 @@ class Car:
     @property
     def waterSystem(self):
         return self._waterSystem
+    
+    @property
+    def airConditioner(self):
+        return self._airConditioner
     
     def unlock(self, carKey):
         if not carKey.authorizedFor(self):

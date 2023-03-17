@@ -141,7 +141,179 @@ class Test_CarEntity(unittest.TestCase):
         car.windshieldWiper.decreaseLevel()
 
         self.assertEqual(car.windshieldWiper.velocity, 5)
+
+    def test_carAirConditionerActivatedIfCarTurnedOn(self):
+        """Car air conditioner can only be activated if the car is turned on"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+
+        self.assertEqual(car.airConditioner.isActive, False)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.isActive, True)
+        
+        car.airConditioner.decreaseFanSpeed()
+
+        car.turnOff(key)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.isActive, False)
+
+    def test_carAirConditionerFanSpeedDifferentVelocities(self):
+        """Car air conditioner fan can have different velocities"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+
+        # Test increasing
+
+        self.assertEqual(car.airConditioner.fanSpeed, 0)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 1)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 2)
+        
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 3)
+
+        # To ensure it dont go over the max speed
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 3)
+
+        # Test decreasing
+
+        car.airConditioner.decreaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 2)
+
+        car.airConditioner.decreaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 1)
+        
+        car.airConditioner.decreaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 0)
+
+        # To ensure it dont go under the max speed
+
+        car.airConditioner.decreaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.fanSpeed, 0)
+
+    def test_carAirConditionerTemperatureChangesRespectingLimits(self):
+        """Car air conditioner temperature can be changed within a limit"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+
+        self.assertEqual(car.airConditioner.temperature, 16)
+
+        car.airConditioner.temperature = 20
+
+        self.assertEqual(car.airConditioner.temperature, 20)
+        
+        car.airConditioner.temperature = 14
+
+        self.assertEqual(car.airConditioner.temperature, 16)
+        
+        car.airConditioner.temperature = 36
+
+        self.assertEqual(car.airConditioner.temperature, 35)
+
+    def test_carAirConditionerDirectionChosenWithinSet(self):
+        """Car air conditioner air-direction can be chosen within a specified set"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+        
+        self.assertEqual(car.airConditioner.airDirection, 'front')
+
+        car.airConditioner.airDirection = 'down'
+
+        self.assertEqual(car.airConditioner.airDirection, 'down')
+        
+        car.airConditioner.airDirection = 'front-down'
+
+        self.assertEqual(car.airConditioner.airDirection, 'front-down')
+        
+        car.airConditioner.airDirection = 'up-front'
+
+        self.assertEqual(car.airConditioner.airDirection, 'up-front')
+
+    def test_carAirConditionerOutsideEntranceToggled(self):
+        """Car air conditioner outside air entrance can be toggled on/off"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.outsideAirEntranceOpen, False)
+
+        car.airConditioner.toggleOutsideAirEntrance()
+
+        self.assertEqual(car.airConditioner.outsideAirEntranceOpen, True)
+        
+        car.airConditioner.toggleOutsideAirEntrance()
+
+        self.assertEqual(car.airConditioner.outsideAirEntranceOpen, False)
+
+        # To ensure it does no toggle after deactivated
+
+        car.airConditioner.decreaseFanSpeed()
+
+        car.airConditioner.toggleOutsideAirEntrance()
+
+        self.assertEqual(car.airConditioner.outsideAirEntranceOpen, False)
     
+    def test_carAirConditionerCoolToggled(self):
+        """Car air conditioner cool can be toggled on/off"""
+
+        car = Car()
+        key = CarKey(car)
+
+        car.turnOn(key)
+
+        car.airConditioner.increaseFanSpeed()
+
+        self.assertEqual(car.airConditioner.cool, False)
+
+        car.airConditioner.toggleCool()
+
+        self.assertEqual(car.airConditioner.cool, True)
+        
+        car.airConditioner.toggleCool()
+
+        self.assertEqual(car.airConditioner.cool, False)
+
+        # To ensure it does no toggle after deactivated
+
+        car.airConditioner.decreaseFanSpeed()
+
+        car.airConditioner.toggleCool()
+
+        self.assertEqual(car.airConditioner.cool, False)
+
 class Test_CarEntityAsync(unittest.IsolatedAsyncioTestCase):
     async def test_carWindshieldWiperWipe3TimesIfWaterSystemActivated(self):
         """Car windshield wiper must wipe 3 times if water system is activated"""
